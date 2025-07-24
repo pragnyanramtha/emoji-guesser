@@ -1,9 +1,7 @@
 // public/client.js
 document.addEventListener('DOMContentLoaded', () => {
-
     
     const socket = io(window.location.origin);
-
 
     // Views
     const landingPage = document.getElementById('landing-page');
@@ -30,13 +28,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let isTyping = false;
 
-    // --- Main User Entry Flow ---
+
     landingForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const username = usernameInput.value.trim();
         if (username) {
             socket.emit('user:join', { username });
-            // Transition from landing page to the game
             landingPage.classList.add('hidden');
             gameView.classList.remove('hidden');
             messageInput.focus();
@@ -48,12 +45,17 @@ document.addEventListener('DOMContentLoaded', () => {
         gameView.classList.remove('hidden');
         messageInput.focus();
     });
-    
+
     // --- Game Setup & Connection ---
     socket.on('connect', () => {
+        console.log('Successfully connected to WebSocket server!');
         socket.emit('client:get_word_list', (words) => {
             populateWordList(words);
         });
+    });
+
+    socket.on('connect_error', (err) => {
+        console.error('Connection Error:', err);
     });
 
     function populateWordList(words) {
@@ -65,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Chat & Typing Logic ---
+
     chatForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const msg = messageInput.value.trim();
@@ -93,19 +95,27 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- DOM Update Functions ---
+
     const addMessageToDOM = (html) => {
         messages.innerHTML += html;
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
     };
 
-    socket.on('chat:message', ({ user, text }) => {
+    socket.on('chat:message', ({ user, text, timestamp }) => {
+        const time = new Date(timestamp).toLocaleTimeString([], {
+            hour: 'numeric',
+            minute: '2-digit'
+        });
+
         addMessageToDOM(`
             <div class="message-wrapper">
                 <div class="user-avatar">${user.emojiAvatar}</div>
                 <div class="message">
                     <div class="username">${user.username}</div>
-                    <div class="text">${text}</div>
+                    <div class="text">
+                        ${text}
+                    </div>
+                    <span class="message-timestamp">${time}</span>
                 </div>
             </div>
         `);
@@ -115,7 +125,6 @@ document.addEventListener('DOMContentLoaded', () => {
         addMessageToDOM(`<div class="system-message">${text}</div>`);
     });
 
-    // --- Game Flow Logic ---
     socket.on('game:new_round', ({ clue }) => {
         if (!gameOverView.classList.contains('hidden')) {
             gameOverView.classList.add('hidden');
@@ -131,15 +140,12 @@ document.addEventListener('DOMContentLoaded', () => {
         gameOverView.classList.remove('hidden');
     });
 
-    // --- Dynamic User List Rendering (THE CORRECTED/RESTORED FUNCTION) ---
     socket.on('user:list_update', (users) => {
         const typingUsernames = [];
-        usersList.innerHTML = ''; // Clear the list before re-rendering
+        usersList.innerHTML = '';
         
         users.forEach(user => {
-            // Use the typing emoji if it exists, otherwise use the default avatar
             const avatar = user.typingEmoji || user.emojiAvatar;
-            
             const userElement = document.createElement('li');
             userElement.innerHTML = `<span class="user-avatar">${avatar}</span> ${user.username}`;
             usersList.appendChild(userElement);
@@ -149,7 +155,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Update the "is typing..." text indicator
         if (typingUsernames.length === 0) {
             typingIndicator.textContent = '';
         } else if (typingUsernames.length === 1) {
@@ -158,32 +163,5 @@ document.addEventListener('DOMContentLoaded', () => {
             typingIndicator.textContent = 'Several people are typing...';
         }
     });
-});
 
-// In public/client.js
-
-// ... (all code before this function remains the same) ...
-
-socket.on('chat:message', ({ user, text, timestamp }) => {
-    // Format the timestamp into a readable string like "11:45 AM"
-    const time = new Date(timestamp).toLocaleTimeString([], {
-        hour: 'numeric',
-        minute: '2-digit'
-    });
-
-    addMessageToDOM(`
-        <div class="message-wrapper">
-            <div class="user-avatar">${user.emojiAvatar}</div>
-            <div class="message">
-                <div class="username">${user.username}</div>
-                <div class="text">
-                    ${text}
-                </div>
-                <!-- The new timestamp element -->
-                <span class="message-timestamp">${time}</span>
-            </div>
-        </div>
-    `);
-});
-
-// ... (all code after this function remains the same) ...
+}); 

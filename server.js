@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.static('public'));
 
-// --- STATE MANAGEMENT ---
+
 let users = {};
 let gameState = {
     secretWord: '',
@@ -20,12 +20,12 @@ let gameState = {
     roundInProgress: false,
 };
 
-// --- CONSTANTS ---
+
 const FACE_EMOJIS = ['😀', '😎', '🥳', '😊', '😂', '😇', '😍', '🤩', '🤓', '🤠'];
 const TYPING_EMOJIS = ['✍️', '🤔', '🏃‍♂️', '🧐', '🤯', '💬', '👀'];
 let availableTypingEmojis = [...TYPING_EMOJIS];
 
-// --- GAME LOGIC ---
+
 const startNewRound = async () => {
     console.log("Starting a new round...");
     gameState.roundInProgress = true;
@@ -37,11 +37,11 @@ const startNewRound = async () => {
     io.emit('system:message', 'A new round has started! Guess the word from the emojis.');
 };
 
-// --- SOCKET.IO CONNECTION HANDLING ---
+
 io.on('connection', (socket) => {
     console.log(`User connected: ${socket.id}`);
     
-    // Send the word list to a newly connected client
+
     socket.on('client:get_word_list', (callback) => {
         callback(simpleWords);
     });
@@ -70,7 +70,7 @@ io.on('connection', (socket) => {
         if (sanitizedMsg.includes(secretWord)) {
             gameState.roundInProgress = false;
             io.emit('game:over', { winner: user.username, secretWord: gameState.secretWord });
-            setTimeout(startNewRound, 1000);
+            setTimeout(startNewRound, 10000);
         } else {
             io.emit('chat:message', { user, text: msg, timestamp: new Date() });
         }
