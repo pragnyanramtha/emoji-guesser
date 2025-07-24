@@ -60,7 +60,7 @@ Follow these instructions to get a copy of the project up and running on your lo
     npm install
     ```
 
-3.  **Create your environment file:**
+3.  **Create your environment file:** optional (please uncomment a some code in gemini.js for functional api)
     Create a new file named `.env` in the root of your project directory. This file will hold your secret API key and is ignored by Git.
     ```
     # .env
