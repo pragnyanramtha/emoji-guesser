@@ -33,7 +33,7 @@ const emojiClueMap = {
   "light switch": "💡🔛🔌",
   "beehive": "🐝🍯🏠",
   "greenhouse": "🌱🏠☀️",
-  "water bottle": "💧🍾 plastica",
+  "water bottle": "💧🍾",
   "air conditioner": "❄️🌬️📦",
   "sewing machine": "🧵🪡👕",
   "electric fan": "🌬️⚡💨",
