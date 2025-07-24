@@ -2,7 +2,7 @@
 
 A real-time, multiplayer emoji word puzzle game powered by Node.js, Socket.IO, and the Google Gemini AI.
 
-**[➡️ Live Demo Link! ](https://your-app-name.onrender.com)**
+**[➡️ Live Demo Link! ](https://emoji-guesser.onrender.com)**
 
 ---
 
