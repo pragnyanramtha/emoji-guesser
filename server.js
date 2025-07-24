@@ -8,7 +8,8 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
-const PORT = process.env.PORT || 3000;
+const PORT = 10000;
+const HOST = '0.0.0.0';
 
 app.use(express.static('public'));
 
@@ -109,6 +110,6 @@ io.on('connection', (socket) => {
     });
 });
 
-server.listen(PORT, () => {
+server.listen(PORT, HOST, () => {
     console.log(`Emoji Guesser is running at http://localhost:${PORT}`);
 });
