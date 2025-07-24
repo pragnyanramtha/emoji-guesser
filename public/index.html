@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emoji Guesser</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤔</text></svg>">
+</head>
+<body>
+
+    <div id="app-container">
+
+        <!-- LANDING PAGE WITH INTEGRATED LOGIN -->
+        <div id="landing-page">
+            <div class="landing-content">
+                <h1 class="landing-title">Emoji Guesser</h1>
+                <p class="landing-subtitle">The real-time emoji word puzzle game powered by AI.</p>
+                <!-- Login form is now here -->
+                <form id="landing-form">
+                    <input type="text" id="username-input" placeholder="Enter your username" required maxlength="15" autocomplete="off">
+                    <button type="submit">Start Playing →</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- MAIN GAME VIEW (Remains hidden) -->
+        <div id="game-view" class="hidden">
+            <!-- Left Column: Online Users -->
+            <aside class="side-panel" id="users-panel">
+                <div class="panel-header">
+                    <h3>Online Users</h3>
+                </div>
+                <ul id="users-list"></ul>
+            </aside>
+
+            <!-- Center Column: Main Chat Interface -->
+            <main class="main-content">
+                <header class="game-header">
+                    <div id="clue-display">Waiting for a new round...</div>
+                </header>
+                <div id="messages-container">
+                    <div id="messages"></div>
+                </div>
+                <div id="chat-input-area">
+                    <div id="typing-indicator"></div>
+                    <form id="chat-form">
+                        <input id="message-input" autocomplete="off" placeholder="Type your guess..." />
+                        <button type="submit" aria-label="Send Message">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.47826 2.33331L21.6666 12L3.47826 21.6666V14L15.6666 12L3.47826 10V2.33331Z" fill="currentColor"/></svg>
+                        </button>
+                    </form>
+                </div>
+            </main>
+
+            <!-- Right Column: Word List -->
+            <aside class="side-panel" id="word-list-panel">
+                <div class="panel-header">
+                    <h3>Word Bank</h3>
+                </div>
+                <ul id="word-list"></ul>
+            </aside>
+        </div>
+
+        <!-- GAME OVER VIEW (MODAL) (Remains hidden) -->
+        <div id="game-over-view" class="modal-overlay hidden">
+            <div class="modal-content">
+                <div id="winner-announcement"></div>
+                <p>The next round will begin shortly...</p>
+                <button id="play-again-button">Continue</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="client.js"></script>
+</body>
+</html>
