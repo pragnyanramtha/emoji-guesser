@@ -1,6 +1,9 @@
 // public/client.js
 document.addEventListener('DOMContentLoaded', () => {
-    const socket = io();
+
+    
+    const socket = io(window.location.origin);
+
 
     // Views
     const landingPage = document.getElementById('landing-page');
@@ -156,3 +159,31 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+// In public/client.js
+
+// ... (all code before this function remains the same) ...
+
+socket.on('chat:message', ({ user, text, timestamp }) => {
+    // Format the timestamp into a readable string like "11:45 AM"
+    const time = new Date(timestamp).toLocaleTimeString([], {
+        hour: 'numeric',
+        minute: '2-digit'
+    });
+
+    addMessageToDOM(`
+        <div class="message-wrapper">
+            <div class="user-avatar">${user.emojiAvatar}</div>
+            <div class="message">
+                <div class="username">${user.username}</div>
+                <div class="text">
+                    ${text}
+                </div>
+                <!-- The new timestamp element -->
+                <span class="message-timestamp">${time}</span>
+            </div>
+        </div>
+    `);
+});
+
+// ... (all code after this function remains the same) ...

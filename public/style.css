@@ -450,3 +450,34 @@ body {
     opacity: 0;
     animation: fadeIn 0.3s forwards;
 }
+
+/* Add these styles to your public/style.css */
+
+.message .text {
+    background-color: var(--bg-tertiary);
+    padding: 10px 16px;
+    border-radius: 18px 18px 18px 4px; /* Chat bubble effect */
+    display: inline-block;
+    word-wrap: break-word;
+    position: relative; /* Needed for positioning the timestamp */
+}
+
+/* New timestamp styles */
+.message-timestamp {
+    position: absolute;
+    bottom: -20px; /* Position it just below the message bubble */
+    left: 0;
+    font-size: 0.75rem; /* Make it small */
+    color: var(--text-secondary);
+    white-space: nowrap; /* Prevent it from wrapping */
+    opacity: 0; /* Hidden by default */
+    transition: opacity 0.3s ease; /* Smooth fade-in effect */
+    pointer-events: none; /* So it doesn't interfere with mouse events */
+}
+
+/* The hover effect */
+.message-wrapper:hover .message-timestamp {
+    opacity: 1; /* Show on hover of the entire message wrapper */
+}
+
+/* ... (the rest of the file remains the same) ... */
